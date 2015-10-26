@@ -1,0 +1,8 @@
+{{ $gossipService := env "SERVICE_9300_NAME" }}
+export ES_JAVA_OPTS="
+$ES_JAVA_OPTS
+-Des.discovery.zen.ping.timeout=3s
+-Des.discovery.zen.ping.multicast.enabled=false
+-Des.network.publish_host={{ env "HOST_IP" }}
+-Des.discovery.zen.ping.unicast.hosts={{range $i, $s := service $gossipService}}{{if $i}}{{end}}{{$s.Address}}:{{$s.Port}},{{else}}127.0.0.1{{end}}
+"
